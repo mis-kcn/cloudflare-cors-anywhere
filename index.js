@@ -16,7 +16,7 @@ The main goal is to facilitate cross-origin requests while enforcing specific se
 // Configuration: Whitelist and Blacklist (not used in this version)
 // whitelist = [ "^http.?://www.zibri.org$", "zibri.org$", "test\\..*" ];  // regexp for whitelisted urls
 const blacklistUrls = [];           // regexp for blacklisted urls
-const whitelistOrigins = [ ".*" ];   // regexp for whitelisted origins
+const whitelistOrigins = [".*"];   // regexp for whitelisted origins
 
 // Function to check if a given URI or origin is listed in the whitelist or blacklist
 function isListedInWhitelist(uri, listing) {
@@ -36,9 +36,9 @@ function isListedInWhitelist(uri, listing) {
 
 // Event listener for incoming fetch requests
 addEventListener("fetch", async event => {
-    event.respondWith((async function() {
+    event.respondWith((async function () {
         const isPreflightRequest = (event.request.method === "OPTIONS");
-        
+
         const originUrl = new URL(event.request.url);
 
         // Function to modify headers to enable CORS
@@ -68,7 +68,7 @@ addEventListener("fetch", async event => {
             if (customHeaders !== null) {
                 try {
                     customHeaders = JSON.parse(customHeaders);
-                } catch (e) {}
+                } catch (e) { }
             }
 
             if (originUrl.search.startsWith("?")) {
@@ -95,7 +95,7 @@ addEventListener("fetch", async event => {
                 });
 
                 const response = await fetch(targetUrl, newRequest);
-                const responseHeaders = new Headers(response.headers);
+                var responseHeaders = new Headers(response.headers);
                 const exposedHeaders = [];
                 const allResponseHeaders = {};
                 for (const [key, value] of response.headers.entries()) {
@@ -118,7 +118,7 @@ addEventListener("fetch", async event => {
                 return new Response(responseBody, responseInit);
 
             } else {
-                const responseHeaders = new Headers();
+                var responseHeaders = new Headers();
                 responseHeaders = setupCORSHeaders(responseHeaders);
 
                 let country = false;
